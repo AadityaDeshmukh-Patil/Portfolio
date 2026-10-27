@@ -1,0 +1,1951 @@
+/* ==========================================================================
+   THE DEVELOPER ROAD TRIP — STYLESHEET
+   A Modern Classic 2D Interactive Portfolio Experience
+   Palette: Warm Ivory, Deep Charcoal, Muted Sage, Racing Red, Soft Sky Blue
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & CSS Variables
+   -------------------------------------------------------------------------- */
+:root {
+  /* Core Brand Colors */
+  --c-ivory: #F5F0E8;
+  --c-ivory-light: #FAF7F2;
+  --c-cream: #FFFDF9;
+  --c-charcoal: #232522;
+  --c-charcoal-soft: #383C37;
+  --c-charcoal-muted: #646A63;
+  --c-sage: #A3AD91;
+  --c-sage-light: #C2CBB5;
+  --c-sage-dark: #647055;
+  --c-red: #D9684B;
+  --c-red-dark: #B64C31;
+  --c-sky-morning: #C7D9E2;
+  --c-sky-noon: #B5D2E4;
+  --c-sky-sunset: #E4A37C;
+  --c-sky-dusk: #483E54;
+  --c-yellow: #E9C879;
+  --c-yellow-amber: #D8A649;
+  
+  /* Environment Dynamic Sky Colors (driven by JS world position) */
+  --sky-top: #C7D9E2;
+  --sky-bottom: #F5F0E8;
+  --sun-color: #F8E2A2;
+  --sun-glow: rgba(248, 226, 162, 0.4);
+  --ambient-light: 1;
+
+  /* Road & Scenery */
+  --c-road: #2E3330;
+  --c-road-curb: #D5CCC0;
+  --c-road-stripe: #E9C879;
+  --c-grass-near: #8B9A76;
+  --c-grass-mid: #A3AD91;
+  --c-grass-far: #B9C4A9;
+  --c-mountains: #90A08A;
+
+  /* Typography */
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Space Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  /* Elevation & Borders */
+  --border-hairline: 1px solid rgba(35, 37, 34, 0.12);
+  --border-strong: 1.5px solid rgba(35, 37, 34, 0.85);
+  --border-retro: 2px solid #232522;
+  --shadow-sm: 0 2px 6px rgba(35, 37, 34, 0.06);
+  --shadow-md: 0 8px 24px rgba(35, 37, 34, 0.08);
+  --shadow-lg: 0 16px 40px rgba(35, 37, 34, 0.12);
+  --shadow-retro: 4px 4px 0px #232522;
+  --shadow-retro-lg: 6px 6px 0px #232522;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 180ms;
+  --duration-norm: 320ms;
+  --duration-slow: 600ms;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Base Styles
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: var(--c-ivory);
+  color: var(--c-charcoal);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+body {
+  position: relative;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+/* Allow text selection in readable panels */
+.panel-card, .checkpoint-overlay, .modal-box, .reader-mode-container {
+  user-select: text;
+}
+
+/* Paper grain overlay for authentic vintage warmth */
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   3. Floating Header & Navigation
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 1240px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 18px;
+  background: rgba(250, 247, 242, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: var(--border-retro);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-retro);
+  transition: transform var(--duration-norm) var(--ease-smooth), opacity var(--duration-norm);
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--c-charcoal);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--c-red);
+  color: #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--c-charcoal);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.brand-text span {
+  color: var(--c-red);
+  font-style: italic;
+}
+
+/* Nav Links - Direct Section Jump */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+
+.nav-item-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--c-charcoal-muted);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  white-space: nowrap;
+}
+
+.nav-item-btn:hover {
+  color: var(--c-charcoal);
+  background: rgba(35, 37, 34, 0.05);
+}
+
+.nav-item-btn.active {
+  color: var(--c-charcoal);
+  background: var(--c-yellow);
+  border-color: var(--c-charcoal);
+  box-shadow: 2px 2px 0px #232522;
+}
+
+/* Header Utilities */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mode-toggle-btn, .sound-btn, .map-toggle-btn, .mobile-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--c-ivory-light);
+  color: var(--c-charcoal);
+  border: 1.5px solid var(--c-charcoal);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #232522;
+  transition: transform 120ms, box-shadow 120ms;
+}
+
+.mode-toggle-btn:hover, .sound-btn:hover, .map-toggle-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #232522;
+}
+
+.mode-toggle-btn:active, .sound-btn:active, .map-toggle-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #232522;
+}
+
+.mobile-menu-btn {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. Journey Progress Bar (Mini HUD)
+   -------------------------------------------------------------------------- */
+.hud-strip {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 900px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 16px;
+  background: rgba(255, 253, 249, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(35, 37, 34, 0.6);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: opacity var(--duration-norm);
+}
+
+.hud-metric {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.hud-metric span.metric-val {
+  color: var(--c-red);
+}
+
+.progress-track-wrapper {
+  flex: 1;
+  position: relative;
+  height: 8px;
+  background: #E4DCCF;
+  border-radius: var(--radius-pill);
+  overflow: visible;
+  border: 1px solid rgba(35, 37, 34, 0.25);
+}
+
+.progress-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--c-sage) 0%, var(--c-red) 100%);
+  border-radius: var(--radius-pill);
+  transition: width 150ms linear;
+}
+
+/* Checkpoint milestone pips on the progress bar */
+.checkpoint-pips {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.pip {
+  width: 10px;
+  height: 10px;
+  background: var(--c-cream);
+  border: 1.5px solid var(--c-charcoal);
+  border-radius: 50%;
+  cursor: pointer;
+  transform: scale(0.9);
+  transition: all var(--duration-fast);
+  position: relative;
+}
+
+.pip.visited {
+  background: var(--c-yellow);
+}
+
+.pip.current {
+  background: var(--c-red);
+  transform: scale(1.3);
+  box-shadow: 0 0 6px rgba(217, 104, 75, 0.6);
+}
+
+.pip:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--c-charcoal);
+  color: #fff;
+  font-size: 0.68rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  font-family: var(--font-sans);
+}
+
+/* --------------------------------------------------------------------------
+   5. Opening Screen / Hero Welcome Overlay
+   -------------------------------------------------------------------------- */
+.opening-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--c-ivory);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+  transition: opacity var(--duration-slow) var(--ease-smooth), visibility var(--duration-slow);
+}
+
+.opening-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.opening-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--c-yellow);
+  border: 1.5px solid var(--c-charcoal);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  box-shadow: 2px 2px 0px #232522;
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+.opening-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  max-width: 860px;
+  color: var(--c-charcoal);
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
+}
+
+.opening-title em {
+  font-style: italic;
+  color: var(--c-red);
+}
+
+.opening-subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  color: var(--c-charcoal-muted);
+  max-width: 620px;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.opening-supporting {
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  color: var(--c-red);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 36px;
+}
+
+.opening-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.btn-primary-journey {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: var(--c-red);
+  color: #fff;
+  border: var(--border-retro);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-retro-lg);
+  transition: all var(--duration-fast);
+}
+
+.btn-primary-journey:hover {
+  background: var(--c-red-dark);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px #232522;
+}
+
+.btn-primary-journey:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px #232522;
+}
+
+.btn-secondary-reader {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 28px;
+  background: var(--c-cream);
+  color: var(--c-charcoal);
+  border: var(--border-retro);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-retro);
+  transition: all var(--duration-fast);
+}
+
+.btn-secondary-reader:hover {
+  background: var(--c-ivory-light);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #232522;
+}
+
+.opening-controls-hint {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--c-charcoal-muted);
+}
+
+.key-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  background: #E8E2D5;
+  border: 1px solid var(--c-charcoal);
+  border-radius: 4px;
+  font-weight: 700;
+  color: var(--c-charcoal);
+  box-shadow: 1px 1px 0px #232522;
+}
+
+/* --------------------------------------------------------------------------
+   6. The 2D Game Viewport & Scenery Layers
+   -------------------------------------------------------------------------- */
+.game-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 70%, #F5F0E8 100%);
+  transition: background 600ms linear;
+}
+
+/* Celestial Object (Sun / Moon) */
+.celestial-body {
+  position: absolute;
+  top: 14%;
+  right: 18%;
+  width: 72px;
+  height: 72px;
+  background: var(--sun-color);
+  border-radius: 50%;
+  border: 2px solid rgba(35, 37, 34, 0.4);
+  box-shadow: 0 0 40px var(--sun-glow);
+  pointer-events: none;
+  transition: all 1s ease;
+  z-index: 2;
+}
+
+/* Parallax Layers Container */
+.parallax-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Layer 1: Distant Mountains */
+.layer-mountains {
+  z-index: 5;
+  bottom: 0;
+  height: 100%;
+}
+
+.mountain-svg-track {
+  position: absolute;
+  bottom: 120px;
+  left: 0;
+  width: 4000px;
+  height: 240px;
+}
+
+/* Layer 2: Midground Rolling Hills & Pines */
+.layer-hills {
+  z-index: 10;
+  bottom: 0;
+  height: 100%;
+}
+
+.hills-svg-track {
+  position: absolute;
+  bottom: 110px;
+  left: 0;
+  width: 6000px;
+  height: 220px;
+}
+
+/* Layer 3: Clouds (Floating) */
+.layer-clouds {
+  z-index: 4;
+  top: 60px;
+  height: 200px;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50px;
+  box-shadow: 0 6px 12px rgba(35, 37, 34, 0.04);
+  filter: blur(0.4px);
+}
+
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 140px;
+  height: 44px;
+  top: 40px;
+  left: 10%;
+  animation: floatCloud 45s linear infinite;
+}
+.cloud-1::before { width: 50px; height: 50px; top: -24px; left: 24px; }
+.cloud-1::after { width: 40px; height: 40px; top: -16px; left: 66px; }
+
+.cloud-2 {
+  width: 190px;
+  height: 52px;
+  top: 90px;
+  left: 45%;
+  animation: floatCloud 65s linear infinite;
+  animation-delay: -20s;
+}
+.cloud-2::before { width: 66px; height: 66px; top: -30px; left: 35px; }
+.cloud-2::after { width: 52px; height: 52px; top: -20px; left: 95px; }
+
+.cloud-3 {
+  width: 160px;
+  height: 48px;
+  top: 30px;
+  left: 75%;
+  animation: floatCloud 55s linear infinite;
+  animation-delay: -35s;
+}
+.cloud-3::before { width: 56px; height: 56px; top: -26px; left: 30px; }
+.cloud-3::after { width: 44px; height: 44px; top: -18px; left: 80px; }
+
+/* Layer 4: World Road & Checkpoint Landmarks */
+.world-container {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 20;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+/* Road Verge & Asphalt */
+.road-ground {
+  position: absolute;
+  bottom: 0;
+  left: -2000px;
+  width: 14000px;
+  height: 140px;
+  background: var(--c-road);
+  border-top: 5px solid var(--c-road-curb);
+  box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Grass border above road */
+.road-verge {
+  position: absolute;
+  bottom: 140px;
+  left: -2000px;
+  width: 14000px;
+  height: 42px;
+  background: var(--c-grass-near);
+  border-top: 2px solid var(--c-sage-dark);
+}
+
+/* Dashed Center Road Lines */
+.road-markings {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--c-road-stripe) 0px,
+    var(--c-road-stripe) 40px,
+    transparent 40px,
+    transparent 90px
+  );
+}
+
+/* --------------------------------------------------------------------------
+   7. Roadside Landmarks & Checkpoints in Game World
+   -------------------------------------------------------------------------- */
+.landmark-anchor {
+  position: absolute;
+  bottom: 140px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform var(--duration-fast);
+}
+
+.landmark-anchor:hover {
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* Landmark SVG & Visual Building */
+.landmark-graphic {
+  filter: drop-shadow(4px 4px 0px rgba(35, 37, 34, 0.3));
+  transition: filter var(--duration-fast), transform var(--duration-fast);
+}
+
+.landmark-anchor.active .landmark-graphic {
+  filter: drop-shadow(0 0 16px rgba(233, 200, 121, 0.8)) drop-shadow(4px 4px 0px #232522);
+}
+
+/* Roadside Mileage Signpost */
+.signpost-badge {
+  margin-top: 8px;
+  padding: 4px 12px;
+  background: var(--c-ivory-light);
+  border: 1.5px solid var(--c-charcoal);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+  white-space: nowrap;
+  box-shadow: 2px 2px 0px #232522;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.signpost-badge span.stop-num {
+  background: var(--c-red);
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+}
+
+/* Checkpoint Parking Bay Area Indicator */
+.checkpoint-bay-indicator {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 28px;
+  border: 2px dashed var(--c-yellow);
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--c-yellow);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+/* --------------------------------------------------------------------------
+   8. Collectible Knowledge Coins
+   -------------------------------------------------------------------------- */
+.knowledge-coin {
+  position: absolute;
+  bottom: 210px;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FFF0AA, var(--c-yellow-amber));
+  border: 2px solid var(--c-charcoal);
+  box-shadow: 2px 2px 0px #232522, 0 0 14px rgba(233, 200, 121, 0.7);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+  cursor: pointer;
+  animation: floatCoin 2.2s ease-in-out infinite;
+  transition: transform 0.2s, opacity 0.3s;
+}
+
+.knowledge-coin.collected {
+  transform: translateX(-50%) translateY(-40px) scale(1.4);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Coin Sparkle Notification Toast */
+.coin-toast {
+  position: fixed;
+  bottom: 180px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--c-cream);
+  border: var(--border-retro);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-retro);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--duration-norm) var(--ease-out-back);
+}
+
+.coin-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.coin-toast-icon {
+  font-size: 1.4rem;
+}
+
+.coin-toast-text {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--c-charcoal);
+}
+
+.coin-toast-text strong {
+  display: block;
+  font-family: var(--font-mono);
+  color: var(--c-red);
+  font-size: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. The Classic 2D Pixel-Art Car
+   -------------------------------------------------------------------------- */
+.car-character {
+  position: absolute;
+  bottom: 85px;
+  left: 0;
+  width: 110px;
+  height: 64px;
+  z-index: 35;
+  transform-origin: bottom center;
+  transition: filter var(--duration-fast);
+  cursor: pointer;
+}
+
+.car-chassis-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: carIdleVibration 0.4s ease-in-out infinite alternate;
+}
+
+.car-character.driving .car-chassis-wrap {
+  animation: carDrivingBounce 0.2s linear infinite alternate;
+}
+
+.car-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.45));
+}
+
+/* Car Headlights Beam */
+.car-headlight-beam {
+  position: absolute;
+  right: -130px;
+  bottom: 12px;
+  width: 140px;
+  height: 50px;
+  background: linear-gradient(90deg, rgba(255, 243, 176, 0.75) 0%, rgba(255, 243, 176, 0.0) 100%);
+  clip-path: polygon(0% 30%, 100% 0%, 100% 100%, 0% 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+
+.night-mode .car-headlight-beam {
+  opacity: 1;
+}
+
+/* Exhaust Smoke Particles */
+.exhaust-pipe-point {
+  position: absolute;
+  left: -4px;
+  bottom: 14px;
+  width: 4px;
+  height: 4px;
+}
+
+.exhaust-puff {
+  position: absolute;
+  background: rgba(220, 220, 220, 0.7);
+  border: 1px solid rgba(120, 120, 120, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: exhaustDisperse 0.65s forwards ease-out;
+}
+
+/* --------------------------------------------------------------------------
+   10. Checkpoint Content Overlay Card (Reveal System)
+   -------------------------------------------------------------------------- */
+.checkpoint-overlay {
+  position: fixed;
+  bottom: 140px;
+  right: 48px;
+  width: min(600px, calc(100vw - 32px));
+  max-height: calc(100vh - 220px);
+  background: var(--c-cream);
+  border: var(--border-retro);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-retro-lg);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(40px) scale(0.96);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform var(--duration-norm) var(--ease-out-back),
+              opacity var(--duration-norm) ease,
+              visibility var(--duration-norm);
+}
+
+.checkpoint-overlay.active {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--c-ivory-light);
+  border-bottom: var(--border-retro);
+}
+
+.card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-tag .tag-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--c-red);
+  border-radius: 50%;
+  border: 1px solid var(--c-charcoal);
+}
+
+.card-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-card-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--c-cream);
+  border: 1px solid var(--c-charcoal);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 1px 1px 0px #232522;
+  transition: all var(--duration-fast);
+}
+
+.btn-card-icon:hover {
+  background: var(--c-yellow);
+  transform: translate(-1px, -1px);
+}
+
+.card-scroll-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.card-headline {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.card-lead {
+  font-size: 0.98rem;
+  color: var(--c-charcoal-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.card-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--c-ivory-light);
+  border-top: var(--border-retro);
+}
+
+.btn-continue-journey {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--c-red);
+  color: #fff;
+  border: var(--border-retro);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-retro);
+  transition: all var(--duration-fast);
+}
+
+.btn-continue-journey:hover {
+  background: var(--c-red-dark);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #232522;
+}
+
+.btn-continue-journey:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #232522;
+}
+
+/* --------------------------------------------------------------------------
+   11. Checkpoint Specific Content Styles
+   -------------------------------------------------------------------------- */
+/* About Me Card */
+.profile-editorial {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-avatar-frame {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-md);
+  border: var(--border-retro);
+  background: #E8E2D5;
+  box-shadow: var(--shadow-retro);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.profile-avatar-frame svg {
+  width: 100%;
+  height: 100%;
+}
+
+.profile-bio-text h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  margin-bottom: 4px;
+}
+
+.profile-role-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--c-red);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.timeline-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 2px dashed var(--c-sage);
+  padding-left: 16px;
+  margin: 18px 0;
+}
+
+.timeline-mini-item {
+  position: relative;
+}
+
+.timeline-mini-item::before {
+  content: '';
+  position: absolute;
+  left: -21px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-yellow);
+  border: 1.5px solid var(--c-charcoal);
+}
+
+.timeline-mini-year {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--c-red);
+}
+
+.timeline-mini-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-charcoal);
+}
+
+/* Skills Garage */
+.skills-garage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.skill-category-box {
+  background: var(--c-ivory-light);
+  border: var(--border-retro);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: 2px 2px 0px #232522;
+}
+
+.skill-cat-title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.skill-cat-title span.cat-icon {
+  font-size: 1rem;
+}
+
+.skill-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  background: var(--c-cream);
+  border: 1px solid rgba(35, 37, 34, 0.4);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--c-charcoal);
+  transition: all var(--duration-fast);
+}
+
+.skill-tag:hover {
+  background: var(--c-yellow);
+  border-color: var(--c-charcoal);
+  transform: translateY(-1px);
+}
+
+/* Projects Stop */
+.projects-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.project-card {
+  background: var(--c-ivory-light);
+  border: var(--border-retro);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 3px 3px 0px #232522;
+  transition: transform var(--duration-fast);
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0px #232522;
+}
+
+.project-top-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.project-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+}
+
+.project-badge-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--c-yellow);
+  border: 1px solid var(--c-charcoal);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.project-desc {
+  font-size: 0.85rem;
+  color: var(--c-charcoal-muted);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.project-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.tech-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  background: var(--c-cream);
+  border: 1px solid rgba(35, 37, 34, 0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--c-charcoal);
+}
+
+.project-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--c-cream);
+  color: var(--c-charcoal);
+  border: 1px solid var(--c-charcoal);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 1px 1px 0px #232522;
+  transition: all var(--duration-fast);
+  cursor: pointer;
+}
+
+.btn-project-link:hover {
+  background: var(--c-yellow);
+  transform: translate(-1px, -1px);
+}
+
+.btn-inspect-modal {
+  background: var(--c-red);
+  color: #fff;
+  border-color: var(--c-charcoal);
+}
+
+.btn-inspect-modal:hover {
+  background: var(--c-red-dark);
+  color: #fff;
+}
+
+/* Experience & Education Road Milestones */
+.milestones-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.milestone-item {
+  display: flex;
+  gap: 14px;
+  background: var(--c-ivory-light);
+  border: var(--border-retro);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: 2px 2px 0px #232522;
+}
+
+.milestone-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c-cream);
+  border: 1.5px solid var(--c-charcoal);
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.milestone-content h4 {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.milestone-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--c-red);
+  margin-bottom: 6px;
+}
+
+.milestone-content p {
+  font-size: 0.82rem;
+  color: var(--c-charcoal-muted);
+  line-height: 1.45;
+}
+
+/* Achievements Board */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.trophy-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: var(--c-ivory-light);
+  border: var(--border-retro);
+  border-radius: var(--radius-md);
+  box-shadow: 2px 2px 0px #232522;
+}
+
+.trophy-medal {
+  font-size: 1.6rem;
+}
+
+.trophy-text h4 {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.trophy-date {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--c-red);
+  font-weight: 700;
+}
+
+/* Future Destination Sign */
+.future-narrative {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.future-goal-card {
+  padding: 14px;
+  background: var(--c-ivory-light);
+  border: var(--border-retro);
+  border-radius: var(--radius-md);
+  box-shadow: 2px 2px 0px #232522;
+}
+
+.future-goal-card h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-red);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.future-goal-card p {
+  font-size: 0.85rem;
+  color: var(--c-charcoal);
+  line-height: 1.5;
+}
+
+/* Contact Station */
+.contact-diner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contact-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--c-charcoal);
+  padding: 12px 16px;
+  background: #E8E2D5;
+  border-left: 4px solid var(--c-red);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.social-links-deck {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--c-cream);
+  border: 1.5px solid var(--c-charcoal);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+  text-decoration: none;
+  box-shadow: 2px 2px 0px #232522;
+  transition: all var(--duration-fast);
+}
+
+.social-pill:hover {
+  background: var(--c-yellow);
+  transform: translate(-1px, -1px);
+}
+
+.contact-form-retro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--c-cream);
+  border: 1.5px solid var(--c-charcoal);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--c-charcoal);
+  transition: border-color var(--duration-fast);
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--c-red);
+  box-shadow: 0 0 0 3px rgba(217, 104, 75, 0.2);
+}
+
+.form-feedback {
+  font-size: 0.72rem;
+  color: var(--c-red);
+  display: none;
+}
+
+.form-feedback.show {
+  display: block;
+}
+
+.btn-send-message {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: var(--c-red);
+  color: #fff;
+  border: var(--border-retro);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-retro);
+  transition: all var(--duration-fast);
+}
+
+.btn-send-message:hover {
+  background: var(--c-red-dark);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #232522;
+}
+
+/* --------------------------------------------------------------------------
+   12. Project Inspection Modal
+   -------------------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: rgba(35, 37, 34, 0.65);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-norm) ease;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-box {
+  background: var(--c-cream);
+  border: var(--border-retro);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-retro-lg);
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(20px) scale(0.96);
+  transition: transform var(--duration-norm) var(--ease-out-back);
+}
+
+.modal-backdrop.active .modal-box {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  padding: 16px 22px;
+  background: var(--c-ivory-light);
+  border-bottom: var(--border-retro);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.modal-mockup {
+  width: 100%;
+  height: 200px;
+  background: var(--c-ivory-light);
+  border: var(--border-retro);
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-red);
+  text-transform: uppercase;
+  margin: 16px 0 8px 0;
+}
+
+.modal-feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--c-charcoal);
+}
+
+.modal-feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.modal-feature-list li::before {
+  content: '✓';
+  color: var(--c-red);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   13. Mobile On-Screen Driving Controls
+   -------------------------------------------------------------------------- */
+.mobile-controls-bar {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: rgba(255, 253, 249, 0.92);
+  backdrop-filter: blur(10px);
+  border: var(--border-retro);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-retro);
+}
+
+.touch-drive-btn {
+  width: 52px;
+  height: 52px;
+  background: var(--c-ivory-light);
+  border: var(--border-retro);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--c-charcoal);
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #232522;
+  transition: transform 80ms, background 120ms;
+  touch-action: manipulation;
+}
+
+.touch-drive-btn:active, .touch-drive-btn.pressed {
+  background: var(--c-yellow);
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #232522;
+}
+
+.touch-btn-drive {
+  background: var(--c-red);
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  font-size: 1.4rem;
+}
+
+.touch-btn-drive:active, .touch-btn-drive.pressed {
+  background: var(--c-red-dark);
+}
+
+/* --------------------------------------------------------------------------
+   14. Route Map Drawer Modal
+   -------------------------------------------------------------------------- */
+.route-map-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  width: min(720px, calc(100vw - 32px));
+  background: var(--c-cream);
+  border: var(--border-retro);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-retro-lg);
+  z-index: 550;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-norm) var(--ease-out-back);
+}
+
+.route-map-modal.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.map-stops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.map-stop-card {
+  padding: 12px;
+  background: var(--c-ivory-light);
+  border: var(--border-retro);
+  border-radius: var(--radius-md);
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #232522;
+  transition: all var(--duration-fast);
+}
+
+.map-stop-card:hover {
+  background: var(--c-yellow);
+  transform: translateY(-2px);
+}
+
+.map-stop-card.active {
+  border-color: var(--c-red);
+  background: #FFF2EE;
+}
+
+.map-stop-card .stop-mile {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--c-red);
+}
+
+.map-stop-card .stop-name {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   15. Journey Complete Screen
+   -------------------------------------------------------------------------- */
+.journey-complete-banner {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.complete-trophy-icon {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+  animation: gentlePulse 2s infinite;
+}
+
+.complete-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.complete-stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 18px 0;
+  font-family: var(--font-mono);
+}
+
+.stat-item strong {
+  display: block;
+  font-size: 1.4rem;
+  color: var(--c-red);
+}
+
+.stat-item span {
+  font-size: 0.72rem;
+  color: var(--c-charcoal-muted);
+}
+
+/* --------------------------------------------------------------------------
+   16. Clean Portfolio Reader Mode Container
+   -------------------------------------------------------------------------- */
+.reader-mode-container {
+  display: none;
+  max-width: 900px;
+  margin: 90px auto 60px auto;
+  padding: 0 24px;
+}
+
+body.reader-mode-active .game-viewport,
+body.reader-mode-active .mobile-controls-bar,
+body.reader-mode-active .hud-strip,
+body.reader-mode-active .checkpoint-overlay {
+  display: none !important;
+}
+
+body.reader-mode-active .reader-mode-container {
+  display: block;
+}
+
+.reader-section {
+  background: var(--c-cream);
+  border: var(--border-retro);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-retro);
+  padding: 36px;
+  margin-bottom: 36px;
+}
+
+.reader-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  border-bottom: var(--border-hairline);
+  padding-bottom: 14px;
+}
+
+.reader-mile-badge {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--c-yellow);
+  border: 1px solid var(--c-charcoal);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.reader-section-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   17. Keyframe Animations
+   -------------------------------------------------------------------------- */
+@keyframes floatCloud {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(2000px); }
+}
+
+@keyframes floatCoin {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+@keyframes carIdleVibration {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-1.5px); }
+}
+
+@keyframes carDrivingBounce {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-2px) rotate(0.4deg); }
+  100% { transform: translateY(0) rotate(-0.3deg); }
+}
+
+@keyframes exhaustDisperse {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-30px, -20px) scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+/* --------------------------------------------------------------------------
+   18. Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: inline-flex;
+  }
+  .checkpoint-overlay {
+    right: 16px;
+    left: 16px;
+    width: auto;
+    bottom: 96px;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    top: 10px;
+    width: calc(100% - 20px);
+    padding: 8px 14px;
+  }
+  .hud-strip {
+    top: 68px;
+    width: calc(100% - 20px);
+    font-size: 0.68rem;
+  }
+  .checkpoint-overlay {
+    bottom: 84px;
+    max-height: calc(100vh - 170px);
+  }
+  .profile-editorial {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .profile-avatar-frame {
+    margin: 0 auto;
+  }
+  .reader-section {
+    padding: 20px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   19. Reduced Motion Accessibility
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .car-chassis-wrap {
+    animation: none !important;
+  }
+  .cloud {
+    animation: none !important;
+  }
+  .knowledge-coin {
+    animation: none !important;
+  }
+}
+

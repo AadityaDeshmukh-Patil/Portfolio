@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aaditya Deshmukh Patil — Interactive Portfolio | Newton School of Technology</title>
+  <meta name="description"
+    content="Learning to Build. Thinking Beyond the Code. Interactive portfolio of Aaditya Deshmukh Patil, Computer Science student at Newton School of Technology focused on AI & ML and aspiring technology builder.">
+  <meta name="theme-color" content="#F5F0E8">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Typography: Google Fonts (Fraunces serif, Plus Jakarta Sans body, Space Mono retro) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Paper grain overlay for authentic vintage tactile warmth -->
+  <div class="paper-grain" aria-hidden="true"></div>
+
+  <!-- =========================================================================
+       1. Top Floating Navigation Header
+       ========================================================================= -->
+  <header class="site-header" role="banner">
+    <a href="#welcome" class="brand-badge" id="brand-link" aria-label="Road Trip Portfolio Home">
+      <div class="brand-icon">🚗</div>
+      <div class="brand-text">The <span>Road Trip</span></div>
+    </a>
+
+    <!-- Direct Checkpoint Jump Links -->
+    <nav class="nav-container" aria-label="Portfolio Checkpoints">
+      <ul class="nav-links" id="nav-checkpoint-links">
+        <li><button type="button" class="nav-item-btn" data-target-stop="1">About</button></li>
+        <li><button type="button" class="nav-item-btn" data-target-stop="2">Skills</button></li>
+        <li><button type="button" class="nav-item-btn" data-target-stop="3">Projects</button></li>
+        <li><button type="button" class="nav-item-btn" data-target-stop="4">Experience</button></li>
+        <li><button type="button" class="nav-item-btn" data-target-stop="5">Awards</button></li>
+        <li><button type="button" class="nav-item-btn" data-target-stop="6">Future</button></li>
+        <li><button type="button" class="nav-item-btn" data-target-stop="7">Contact</button></li>
+      </ul>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <button type="button" class="map-toggle-btn" id="map-toggle-btn" title="View Route Map"
+        aria-label="Open Journey Map">
+        🗺️ Map
+      </button>
+      <button type="button" class="sound-btn" id="sound-btn" title="Toggle Sound FX" aria-label="Toggle Sound Effects">
+        <span id="sound-icon">🔇</span> Sound
+      </button>
+      <button type="button" class="mode-toggle-btn" id="mode-toggle-btn" title="Switch View Mode"
+        aria-label="Switch between Interactive Drive Mode and Clean Reader Mode">
+        📖 Reader Mode
+      </button>
+      <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Navigation Menu">
+        ☰
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       2. Mini Journey HUD & Progress Strip
+       ========================================================================= -->
+  <aside class="hud-strip" id="hud-strip" aria-label="Journey Progress Dashboard">
+    <div class="hud-metric">
+      <span>ODOMETER:</span>
+      <span class="metric-val" id="hud-odometer">0.0 MI</span>
+    </div>
+
+    <!-- Clickable Progress Track with Checkpoint Pips -->
+    <div class="progress-track-wrapper" id="progress-track" title="Click anywhere along the route to travel there">
+      <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      <div class="checkpoint-pips">
+        <span class="pip pip-0 current" data-stop="0" data-title="Start Line" tabindex="0" role="button"
+          aria-label="Start Line"></span>
+        <span class="pip pip-1" data-stop="1" data-title="Stop 1: The Person Behind the Code" tabindex="0" role="button"
+          aria-label="Stop 1: About Me"></span>
+        <span class="pip pip-2" data-stop="2" data-title="Stop 2: My Learning Garage" tabindex="0" role="button"
+          aria-label="Stop 2: My Learning Garage"></span>
+        <span class="pip pip-3" data-stop="3" data-title="Stop 3: Projects Overlook" tabindex="0" role="button"
+          aria-label="Stop 3: Projects"></span>
+        <span class="pip pip-4" data-stop="4" data-title="Stop 4: Experience & Edu" tabindex="0" role="button"
+          aria-label="Stop 4: Experience"></span>
+        <span class="pip pip-5" data-stop="5" data-title="Stop 5: Achievements" tabindex="0" role="button"
+          aria-label="Stop 5: Achievements"></span>
+        <span class="pip pip-6" data-stop="6" data-title="Stop 6: Future Destination" tabindex="0" role="button"
+          aria-label="Stop 6: Future Destination"></span>
+        <span class="pip pip-7" data-stop="7" data-title="Final Stop: Contact Station" tabindex="0" role="button"
+          aria-label="Final Stop: Contact Station"></span>
+      </div>
+    </div>
+
+    <div class="hud-metric" id="hud-coins-metric" title="Click to view collected knowledge coins">
+      <span>COINS:</span>
+      <span class="metric-val" id="hud-coin-count">0 / 7</span>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       3. Opening Screen / Welcome Scene
+       ========================================================================= -->
+  <section class="opening-screen" id="opening-screen" aria-label="Welcome to The Developer Road Trip">
+    <div class="opening-badge">
+      <span>✨ INTERACTIVE DEVELOPER PORTFOLIO</span>
+    </div>
+
+    <h1 class="opening-title">
+      Learning to Build.<br><em>Thinking Beyond the Code.</em>
+    </h1>
+
+    <p class="opening-subtitle">
+      I'm Aaditya Deshmukh Patil, a Computer Science student at Newton School of Technology focused on AI and Machine Learning. I'm exploring programming, intelligent systems, and the technologies that could shape our future.
+    </p>
+
+    <p class="opening-supporting">
+      One idea, one experiment, and one project at a time.
+    </p>
+
+    <div class="opening-cta-group">
+      <button type="button" class="btn-primary-journey" id="btn-start-journey">
+        START THE JOURNEY
+      </button>
+      <button type="button" class="btn-secondary-reader" id="btn-open-reader-mode">
+        EXPLORE MY WORK
+      </button>
+    </div>
+
+    <div class="opening-controls-hint">
+      <span>Controls:</span>
+      <span><span class="key-badge">←</span> <span class="key-badge">→</span> or <span class="key-badge">A</span> <span
+          class="key-badge">D</span> to drive</span>
+      <span>•</span>
+      <span><span class="key-badge">H</span> to honk</span>
+      <span>•</span>
+      <span>Touch controls on mobile</span>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       4. The Interactive 2D Game Viewport
+       ========================================================================= -->
+  <main class="game-viewport" id="game-viewport" aria-label="2D Side-Scrolling Road Trip Scene">
+
+    <!-- Dynamic Sun / Celestial Body -->
+    <div class="celestial-body" id="celestial-body" aria-hidden="true"></div>
+
+    <!-- Parallax Layer 0: Animated Clouds -->
+    <div class="parallax-layer layer-clouds" id="layer-clouds" aria-hidden="true">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="cloud cloud-3"></div>
+    </div>
+
+    <!-- Parallax Layer 1: Distant Mountain Range -->
+    <div class="parallax-layer layer-mountains" id="layer-mountains" aria-hidden="true">
+      <svg class="mountain-svg-track" preserveAspectRatio="none" viewBox="0 0 4000 240" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M0 240L240 110L520 220L840 90L1180 230L1540 80L1860 210L2220 95L2580 230L2940 100L3320 220L3680 85L4000 240Z"
+          fill="#8FA291" fill-opacity="0.45" />
+        <path
+          d="M0 240L380 140L720 240L1080 130L1420 240L1780 120L2160 240L2520 135L2880 240L3260 125L3640 240L4000 130Z"
+          fill="#7D917F" fill-opacity="0.35" />
+      </svg>
+    </div>
+
+    <!-- Parallax Layer 2: Midground Rolling Hills & Pines -->
+    <div class="parallax-layer layer-hills" id="layer-hills" aria-hidden="true">
+      <svg class="hills-svg-track" preserveAspectRatio="none" viewBox="0 0 6000 220" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M0 220C400 130 900 180 1300 140C1700 100 2200 170 2600 130C3000 90 3500 160 3900 120C4300 80 4800 150 5200 110C5600 70 5900 140 6000 220Z"
+          fill="#A3AD91" />
+        <path
+          d="M0 220C300 160 700 190 1100 170C1500 150 1900 190 2300 160C2700 130 3100 180 3500 150C3900 120 4300 170 4700 140C5100 110 5500 160 6000 220Z"
+          fill="#8F9E7B" />
+        <!-- Stylized Pine Trees along hill ridge -->
+        <g fill="#576647">
+          <polygon points="320,180 335,140 350,180" />
+          <polygon points="330,160 335,130 340,160" />
+          <polygon points="850,170 865,130 880,170" />
+          <polygon points="1420,160 1435,120 1450,160" />
+          <polygon points="1980,170 1995,130 2010,170" />
+          <polygon points="2650,150 2665,110 2680,150" />
+          <polygon points="3240,165 3255,125 3270,165" />
+          <polygon points="3890,145 3905,105 3920,145" />
+          <polygon points="4520,160 4535,120 4550,160" />
+          <polygon points="5180,140 5195,100 5210,140" />
+        </g>
+      </svg>
+    </div>
+
+    <!-- Layer 3: Interactive World Container (Moving with Camera) -->
+    <div class="world-container" id="world-container">
+
+      <!-- Continuous Road Verge & Tarmac -->
+      <div class="road-verge"></div>
+      <div class="road-ground">
+        <div class="road-markings"></div>
+      </div>
+
+      <!-- =====================================================================
+           CHECKPOINT LANDMARKS ON THE ROAD
+           ===================================================================== -->
+
+      <!-- Stop 0: Starting Arch & Mile 0 Marker (x = 80px) -->
+      <div class="landmark-anchor" id="landmark-0" style="left: 80px;" data-stop="0">
+        <svg class="landmark-graphic" width="130" height="150" viewBox="0 0 130 150">
+          <!-- Starting Arch / Mile 0 Post -->
+          <rect x="20" y="40" width="8" height="110" fill="#232522" />
+          <rect x="102" y="40" width="8" height="110" fill="#232522" />
+          <path d="M16 40 Q65 10 114 40 L114 62 Q65 32 16 62 Z" fill="#D9684B" stroke="#232522" stroke-width="2" />
+          <text x="65" y="42" font-family="'Space Mono', monospace" font-size="10" font-weight="bold" fill="#FFFDF9"
+            text-anchor="middle">START LINE</text>
+          <text x="65" y="55" font-family="'Space Mono', monospace" font-size="8" fill="#E9C879"
+            text-anchor="middle">MILE 0.0</text>
+        </svg>
+        <div class="signpost-badge"><span class="stop-num">00</span> WELCOME</div>
+        <div class="checkpoint-bay-indicator">PARKING BAY</div>
+      </div>
+
+      <!-- Stop 1: About Me Cottage (x = 1000px) -->
+      <div class="landmark-anchor" id="landmark-1" style="left: 1000px;" data-stop="1">
+        <svg class="landmark-graphic" width="170" height="180" viewBox="0 0 170 180">
+          <!-- Editorial Writer's Cottage / Library -->
+          <rect x="30" y="80" width="110" height="90" fill="#FAF7F2" stroke="#232522" stroke-width="2.5" />
+          <polygon points="15,80 85,25 155,80" fill="#D9684B" stroke="#232522" stroke-width="2.5" />
+          <rect x="48" y="105" width="28" height="28" fill="#C7D9E2" stroke="#232522" stroke-width="2" />
+          <line x1="62" y1="105" x2="62" y2="133" stroke="#232522" stroke-width="1.5" />
+          <line x1="48" y1="119" x2="76" y2="119" stroke="#232522" stroke-width="1.5" />
+          <rect x="94" y="105" width="28" height="65" fill="#E9C879" stroke="#232522" stroke-width="2" />
+          <circle cx="116" cy="138" r="2.5" fill="#232522" />
+          <!-- Chimney with gentle smoke -->
+          <rect x="115" y="32" width="18" height="34" fill="#647055" stroke="#232522" stroke-width="2" />
+        </svg>
+        <div class="signpost-badge"><span class="stop-num">01</span> ABOUT ME</div>
+        <div class="checkpoint-bay-indicator">CHECKPOINT 1</div>
+      </div>
+
+      <!-- Stop 2: Skills Garage (x = 2100px) -->
+      <div class="landmark-anchor" id="landmark-2" style="left: 2100px;" data-stop="2">
+        <svg class="landmark-graphic" width="190" height="180" viewBox="0 0 190 180">
+          <!-- Retro Service Station & Workshop -->
+          <rect x="25" y="70" width="140" height="100" fill="#FAF7F2" stroke="#232522" stroke-width="2.5" />
+          <polygon points="15,70 95,30 175,70" fill="#232522" stroke="#232522" stroke-width="2.5" />
+          <!-- Neon Garage Signboard -->
+          <rect x="45" y="42" width="100" height="22" rx="4" fill="#D9684B" stroke="#232522" stroke-width="2" />
+          <text x="95" y="57" font-family="'Space Mono', monospace" font-size="9" font-weight="bold" fill="#FFFDF9"
+            text-anchor="middle">LEARNING GARAGE</text>
+          <!-- Garage Roll-up Door -->
+          <rect x="42" y="85" width="60" height="85" fill="#E8E2D5" stroke="#232522" stroke-width="2" />
+          <line x1="42" y1="102" x2="102" y2="102" stroke="#232522" stroke-width="1.5" />
+          <line x1="42" y1="119" x2="102" y2="119" stroke="#232522" stroke-width="1.5" />
+          <line x1="42" y1="136" x2="102" y2="136" stroke="#232522" stroke-width="1.5" />
+          <line x1="42" y1="153" x2="102" y2="153" stroke="#232522" stroke-width="1.5" />
+          <!-- Gas Pump / Diagnostics Kiosk -->
+          <rect x="122" y="100" width="26" height="60" rx="4" fill="#A3AD91" stroke="#232522" stroke-width="2" />
+          <rect x="126" y="108" width="18" height="14" fill="#FFFDF9" stroke="#232522" stroke-width="1.5" />
+        </svg>
+        <div class="signpost-badge"><span class="stop-num">02</span> LEARNING GARAGE</div>
+        <div class="checkpoint-bay-indicator">CHECKPOINT 2</div>
+      </div>
+
+      <!-- Stop 3: Projects Scenic Overlook (x = 3400px) -->
+      <div class="landmark-anchor" id="landmark-3" style="left: 3400px;" data-stop="3">
+        <svg class="landmark-graphic" width="190" height="180" viewBox="0 0 190 180">
+          <!-- Scenic Highway Billboard & Lookout Deck -->
+          <rect x="40" y="80" width="10" height="90" fill="#232522" />
+          <rect x="140" y="80" width="10" height="90" fill="#232522" />
+          <!-- Big Retro Billboard -->
+          <rect x="25" y="24" width="140" height="70" rx="6" fill="#FFFDF9" stroke="#232522" stroke-width="2.5" />
+          <rect x="31" y="30" width="128" height="58" fill="#FAF7F2" stroke="#232522" stroke-dasharray="3 3" />
+          <text x="95" y="52" font-family="'Fraunces', serif" font-size="14" font-weight="bold" fill="#D9684B"
+            text-anchor="middle">PROJECT STOPS</text>
+          <text x="95" y="68" font-family="'Space Mono', monospace" font-size="8" fill="#647055" text-anchor="middle">4
+            CREATIVE CREATIONS</text>
+          <!-- Lookout Binoculars Telescope -->
+          <polygon points="150,110 162,105 162,115" fill="#E9C879" stroke="#232522" stroke-width="1.5" />
+          <line x1="156" y1="110" x2="156" y2="155" stroke="#232522" stroke-width="2.5" />
+        </svg>
+        <div class="signpost-badge"><span class="stop-num">03</span> PROJECTS VISTA</div>
+        <div class="checkpoint-bay-indicator">CHECKPOINT 3</div>
+      </div>
+
+      <!-- Stop 4: Experience & Education Academy (x = 4600px) -->
+      <div class="landmark-anchor" id="landmark-4" style="left: 4600px;" data-stop="4">
+        <svg class="landmark-graphic" width="180" height="180" viewBox="0 0 180 180">
+          <!-- Campus Station / Academy Clock Tower -->
+          <rect x="35" y="75" width="110" height="95" fill="#FAF7F2" stroke="#232522" stroke-width="2.5" />
+          <rect x="68" y="25" width="44" height="60" fill="#A3AD91" stroke="#232522" stroke-width="2.5" />
+          <polygon points="60,25 90,2 120,25" fill="#D9684B" stroke="#232522" stroke-width="2" />
+          <!-- Clock Face -->
+          <circle cx="90" cy="46" r="12" fill="#FFFDF9" stroke="#232522" stroke-width="2" />
+          <line x1="90" y1="46" x2="90" y2="39" stroke="#232522" stroke-width="1.5" />
+          <line x1="90" y1="46" x2="96" y2="46" stroke="#232522" stroke-width="1.5" />
+          <!-- Campus Double Doors -->
+          <rect x="74" y="115" width="32" height="55" fill="#232522" rx="2" />
+          <rect x="77" y="118" width="12" height="50" fill="#FAF7F2" />
+          <rect x="91" y="118" width="12" height="50" fill="#FAF7F2" />
+        </svg>
+        <div class="signpost-badge"><span class="stop-num">04</span> ACADEMY & WORK</div>
+        <div class="checkpoint-bay-indicator">CHECKPOINT 4</div>
+      </div>
+
+      <!-- Stop 5: Achievements Golden Station (x = 5700px) -->
+      <div class="landmark-anchor" id="landmark-5" style="left: 5700px;" data-stop="5">
+        <svg class="landmark-graphic" width="160" height="180" viewBox="0 0 160 180">
+          <!-- Trophy Pavilion / Milestone Monument -->
+          <rect x="35" y="110" width="90" height="60" fill="#FAF7F2" stroke="#232522" stroke-width="2.5" />
+          <rect x="45" y="85" width="70" height="25" fill="#E9C879" stroke="#232522" stroke-width="2" />
+          <rect x="55" y="65" width="50" height="20" fill="#FAF7F2" stroke="#232522" stroke-width="2" />
+          <!-- Giant Trophy Cup on Pedestal -->
+          <path d="M66 32 C66 48 94 48 94 32 L94 22 L66 22 Z" fill="#E9C879" stroke="#232522" stroke-width="2" />
+          <path d="M60 25 C54 25 54 38 66 38" fill="none" stroke="#232522" stroke-width="2" />
+          <path d="M100 25 C106 25 106 38 94 38" fill="none" stroke="#232522" stroke-width="2" />
+          <rect x="76" y="48" width="8" height="16" fill="#232522" />
+          <rect x="70" y="64" width="20" height="6" fill="#232522" />
+          <polygon points="80,10 83,16 89,17 84,21 86,27 80,24 74,27 76,21 71,17 77,16" fill="#D9684B" />
+        </svg>
+        <div class="signpost-badge"><span class="stop-num">05</span> ACHIEVEMENTS</div>
+        <div class="checkpoint-bay-indicator">CHECKPOINT 5</div>
+      </div>
+
+      <!-- Stop 6: Future Destination Horizon Vista (x = 6800px) -->
+      <div class="landmark-anchor" id="landmark-6" style="left: 6800px;" data-stop="6">
+        <svg class="landmark-graphic" width="170" height="180" viewBox="0 0 170 180">
+          <!-- Horizon Observatory / Compass Landmark -->
+          <path d="M40 170 L55 85 L115 85 L130 170 Z" fill="#FAF7F2" stroke="#232522" stroke-width="2.5" />
+          <ellipse cx="85" cy="85" rx="36" ry="36" fill="#C7D9E2" stroke="#232522" stroke-width="2.5" />
+          <!-- Telescope pointed upward to stars -->
+          <polygon points="85,85 130,40 138,48 95,95" fill="#D9684B" stroke="#232522" stroke-width="2" />
+          <circle cx="85" cy="85" r="5" fill="#232522" />
+          <!-- Future Signpost Arrow -->
+          <polygon points="40,40 75,40 85,50 75,60 40,60" fill="#E9C879" stroke="#232522" stroke-width="1.8" />
+          <text x="56" y="53" font-family="'Space Mono', monospace" font-size="7" font-weight="bold"
+            fill="#232522">FUTURE ➔</text>
+        </svg>
+        <div class="signpost-badge"><span class="stop-num">06</span> HORIZON GOALS</div>
+        <div class="checkpoint-bay-indicator">CHECKPOINT 6</div>
+      </div>
+
+      <!-- Stop 7: Final Destination Contact Station (x = 7900px) -->
+      <div class="landmark-anchor" id="landmark-7" style="left: 7900px;" data-stop="7">
+        <svg class="landmark-graphic" width="200" height="190" viewBox="0 0 200 190">
+          <!-- Cozy Roadside Post Station & Diner -->
+          <rect x="25" y="80" width="150" height="90" fill="#FAF7F2" stroke="#232522" stroke-width="2.5" />
+          <polygon points="15,80 100,35 185,80" fill="#D9684B" stroke="#232522" stroke-width="2.5" />
+          <!-- Neon Diner Sign -->
+          <rect x="55" y="48" width="90" height="24" rx="4" fill="#E9C879" stroke="#232522" stroke-width="2" />
+          <text x="100" y="64" font-family="'Space Mono', monospace" font-size="9" font-weight="bold" fill="#232522"
+            text-anchor="middle">CONTACT REST STOP</text>
+          <!-- Cozy Windows with Light -->
+          <rect x="42" y="105" width="34" height="34" rx="3" fill="#E9C879" stroke="#232522" stroke-width="2" />
+          <!-- Door -->
+          <rect x="90" y="110" width="30" height="60" fill="#232522" />
+          <!-- Classic Red Postbox -->
+          <rect x="140" y="115" width="20" height="40" rx="6" fill="#D9684B" stroke="#232522" stroke-width="2" />
+          <rect x="144" y="123" width="12" height="3" fill="#FFFDF9" />
+        </svg>
+        <div class="signpost-badge"><span class="stop-num">07</span> CONTACT STATION</div>
+        <div class="checkpoint-bay-indicator">FINAL STOP</div>
+      </div>
+
+      <!-- =====================================================================
+           COLLECTIBLE KNOWLEDGE COINS ALONG THE HIGHWAY
+           ===================================================================== -->
+      <div class="knowledge-coin" style="left: 540px;" data-coin-id="1"
+        data-fact="“Write code for humans first, and computers second.”">★</div>
+      <div class="knowledge-coin" style="left: 1550px;" data-coin-id="2"
+        data-fact="“Modern web standards provide incredible power with zero bloated dependencies.”">★</div>
+      <div class="knowledge-coin" style="left: 2750px;" data-coin-id="3"
+        data-fact="“The secret to clean architecture is high cohesion and low coupling.”">★</div>
+      <div class="knowledge-coin" style="left: 4000px;" data-coin-id="4"
+        data-fact="“A smooth 60fps UI is as much a feature as any business logic.”">★</div>
+      <div class="knowledge-coin" style="left: 5150px;" data-coin-id="5"
+        data-fact="“Lifelong learning: The best engineers remain forever curious students.”">★</div>
+      <div class="knowledge-coin" style="left: 6250px;" data-coin-id="6"
+        data-fact="“Empathy for the user guides every design and performance decision.”">★</div>
+      <div class="knowledge-coin" style="left: 7350px;" data-coin-id="7"
+        data-fact="“The great journey is made of deliberate small steps every single day.”">★</div>
+
+      <!-- =====================================================================
+           THE VINTAGE 2D PIXEL-ART CAR (PLAYER CHARACTER)
+           ===================================================================== -->
+      <div class="car-character" id="car-character" style="left: 80px;" role="img" aria-label="Vintage Red Roadster Car"
+        title="Click me to honk! 🎺">
+        <div class="car-chassis-wrap">
+
+          <!-- Headlight Beam (Lights up at sunset/dusk) -->
+          <div class="car-headlight-beam" id="car-headlight-beam"></div>
+
+          <!-- Exhaust Particles Origin -->
+          <div class="exhaust-pipe-point" id="exhaust-pipe-point"></div>
+
+          <!-- The Vintage Roadster SVG (Pixel/Vector hybrid retro aesthetic) -->
+          <svg class="car-svg" viewBox="0 0 110 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shadow under car -->
+            <ellipse cx="55" cy="56" rx="48" ry="6" fill="#1C1E1B" fill-opacity="0.6" />
+
+            <!-- Main Car Body (Racing Red #D9684B) -->
+            <path d="M12 40 L16 30 L32 20 L72 20 L94 32 L104 40 L104 48 L8 48 L8 40 Z" fill="#D9684B" stroke="#232522"
+              stroke-width="2" />
+
+            <!-- Ivory Racing Stripe along side -->
+            <path d="M8 41 L104 41 L104 45 L8 45 Z" fill="#FAF7F2" stroke="#232522" stroke-width="1" />
+
+            <!-- Cabin / Windshield -->
+            <path d="M34 20 L44 8 L68 8 L76 20 Z" fill="#C7D9E2" stroke="#232522" stroke-width="2" />
+            <line x1="56" y1="8" x2="56" y2="20" stroke="#232522" stroke-width="1.5" />
+
+            <!-- Driver Silhouette with goggles / cap -->
+            <circle cx="50" cy="14" r="5" fill="#232522" />
+            <rect x="48" y="12" width="7" height="3" rx="1.5" fill="#E9C879" />
+
+            <!-- Chrome Bumpers -->
+            <rect x="4" y="44" width="7" height="6" rx="2" fill="#E8E2D5" stroke="#232522" stroke-width="1.5" />
+            <rect x="101" y="44" width="7" height="6" rx="2" fill="#E8E2D5" stroke="#232522" stroke-width="1.5" />
+
+            <!-- Round Vintage Headlight -->
+            <circle cx="102" cy="38" r="4.5" fill="#FFFDF9" stroke="#232522" stroke-width="1.5" />
+            <circle cx="102" cy="38" r="2.5" fill="#E9C879" />
+
+            <!-- Rear Taillight -->
+            <rect x="7" y="36" width="3" height="6" rx="1" fill="#FF4444" stroke="#232522" stroke-width="1" />
+
+            <!-- Wheels with Spinning Hubcaps -->
+            <!-- Rear Wheel -->
+            <g class="car-wheel rear-wheel" transform="translate(26, 48)">
+              <circle cx="0" cy="0" r="12" fill="#232522" />
+              <circle cx="0" cy="0" r="7" fill="#E8E2D5" stroke="#232522" stroke-width="1.5" />
+              <circle cx="0" cy="0" r="3" fill="#D9684B" />
+              <line x1="-5" y1="0" x2="5" y2="0" stroke="#232522" stroke-width="1.2" />
+              <line x1="0" y1="-5" x2="0" y2="5" stroke="#232522" stroke-width="1.2" />
+            </g>
+
+            <!-- Front Wheel -->
+            <g class="car-wheel front-wheel" transform="translate(84, 48)">
+              <circle cx="0" cy="0" r="12" fill="#232522" />
+              <circle cx="0" cy="0" r="7" fill="#E8E2D5" stroke="#232522" stroke-width="1.5" />
+              <circle cx="0" cy="0" r="3" fill="#D9684B" />
+              <line x1="-5" y1="0" x2="5" y2="0" stroke="#232522" stroke-width="1.2" />
+              <line x1="0" y1="-5" x2="0" y2="5" stroke="#232522" stroke-width="1.2" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       5. Checkpoint Portfolio Reveal Card (Slide-up Panel)
+       ========================================================================= -->
+  <aside class="checkpoint-overlay" id="checkpoint-overlay" role="dialog" aria-labelledby="card-headline">
+
+    <!-- Header Bar with Tag and Minimize / Close buttons -->
+    <div class="card-header-bar">
+      <div class="card-tag">
+        <span class="tag-dot"></span>
+        <span id="card-stop-label">STOP 01 · 0.8 MILES</span>
+      </div>
+      <div class="card-controls">
+        <button type="button" class="btn-card-icon" id="btn-minimize-card" title="Dismiss Card to Drive"
+          aria-label="Dismiss Card">✕</button>
+      </div>
+    </div>
+
+    <!-- Scrollable Body with Dynamic Checkpoint Content -->
+    <div class="card-scroll-body" id="card-scroll-body">
+      <!-- Injected by JavaScript based on active stop -->
+    </div>
+
+    <!-- Footer Bar with Continue Journey button -->
+    <div class="card-footer-bar">
+      <button type="button" class="btn-card-icon" id="btn-prev-stop" title="Previous Stop"
+        aria-label="Previous Checkpoint">◀</button>
+      <button type="button" class="btn-continue-journey" id="btn-continue-journey">
+        Continue Journey ➔
+      </button>
+      <button type="button" class="btn-card-icon" id="btn-next-stop" title="Next Stop"
+        aria-label="Next Checkpoint">▶</button>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       6. Project Inspection Modal (Deep-Dive Panel)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="project-modal-backdrop" role="dialog" aria-modal="true"
+    aria-labelledby="modal-project-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-project-title">Project Details</h3>
+        <button type="button" class="btn-card-icon" id="btn-close-project-modal"
+          aria-label="Close Project Inspection">✕</button>
+      </div>
+      <div class="modal-body" id="modal-project-body">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       7. Journey Route Map Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="map-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="map-modal-title">
+    <div class="route-map-modal" id="route-map-modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="map-modal-title">🗺️ Route Map & Navigation</h3>
+        <button type="button" class="btn-card-icon" id="btn-close-map-modal" aria-label="Close Route Map">✕</button>
+      </div>
+      <p style="font-size: 0.86rem; color: var(--c-charcoal-muted); margin-top: 12px;">
+        Click any checkpoint along the highway to fast-travel your roadster directly there:
+      </p>
+      <div class="map-stops-grid" id="map-stops-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       8. Coin Sparkle Toast Banner
+       ========================================================================= -->
+  <div class="coin-toast" id="coin-toast" role="status" aria-live="polite">
+    <div class="coin-toast-icon">🪙</div>
+    <div class="coin-toast-text" id="coin-toast-text">
+      <strong>KNOWLEDGE COIN COLLECTED!</strong>
+      <span>“Write code for humans first, and computers second.”</span>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       9. Mobile On-Screen Driving Controls Bar
+       ========================================================================= -->
+  <div class="mobile-controls-bar" id="mobile-controls-bar" aria-label="Mobile Driving Controls">
+    <button type="button" class="touch-drive-btn" id="btn-touch-left" aria-label="Drive Reverse">◀</button>
+    <button type="button" class="touch-drive-btn touch-btn-drive" id="btn-touch-right"
+      aria-label="Drive Forward">▶</button>
+    <button type="button" class="touch-drive-btn" id="btn-touch-honk" aria-label="Honk Horn" title="Honk!">🎺</button>
+  </div>
+
+  <!-- =========================================================================
+       10. Clean Portfolio Reader Mode (Accessible Linear View)
+       ========================================================================= -->
+  <div class="reader-mode-container" id="reader-mode-container">
+
+    <!-- Reader Header -->
+    <div style="text-align: center; margin-bottom: 48px;">
+      <h1 style="font-family: var(--font-serif); font-size: 2.8rem; margin-bottom: 12px;">Aaditya Deshmukh Patil</h1>
+      <p
+        style="font-family: var(--font-mono); font-size: 0.95rem; color: var(--c-red); font-weight: 700; text-transform: uppercase;">
+        Computer Science Student (AI &amp; ML) · Aspiring Technology Builder
+      </p>
+      <p style="color: var(--c-charcoal-muted); max-width: 640px; margin: 12px auto 24px auto;">
+        An editorial reader view of my learning journey, skills garage, experiments, education, and vision. You can return to the 2D game world at
+        any time using the toggle in the navigation bar.
+      </p>
+      <button type="button" class="btn-primary-journey" id="btn-return-to-game">
+        🚗 Switch to Interactive 2D Drive Mode
+      </button>
+    </div>
+
+    <!-- Reader Section 1: About -->
+    <section class="reader-section" id="reader-about">
+      <div class="reader-section-header">
+        <span class="reader-mile-badge">MILE 0.8 · ABOUT</span>
+        <h2 class="reader-section-title">The Person Behind the Code</h2>
+      </div>
+      <div class="profile-editorial">
+        <div class="profile-avatar-frame">
+          <svg viewBox="0 0 100 100" fill="none">
+            <rect width="100" height="100" fill="#FAF7F2" />
+            <circle cx="50" cy="40" r="20" fill="#A3AD91" />
+            <path d="M20 90 C20 65 35 60 50 60 C65 60 80 65 80 90 Z" fill="#D9684B" />
+          </svg>
+        </div>
+        <div class="profile-bio-text">
+          <h3>Aaditya Deshmukh Patil</h3>
+          <span class="profile-role-badge">Computer Science Student (AI &amp; ML) · Newton School of Technology</span>
+          <div style="font-size: 0.95rem; color: var(--c-charcoal-muted); line-height: 1.6; display: flex; flex-direction: column; gap: 12px; margin-top: 14px;">
+            <p>I'm Aaditya, a Computer Science student at Newton School of Technology with a growing interest in AI, Machine Learning, and the art of building technology.</p>
+            <p>My journey is about more than learning to write code. I want to understand how things work, how different technologies connect, and how an idea can become something useful in the real world.</p>
+            <p>I'm strengthening my programming and problem-solving fundamentals while exploring web development, intelligent systems, electronics, IoT, and robotics.</p>
+            <p>My long-term goal is to become a technology founder: someone who identifies meaningful problems, builds practical solutions, and turns promising ideas into products people can use.</p>
+            <p>I'm still learning, experimenting, and discovering my direction. This portfolio is a snapshot of that journey.</p>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-mini">
+        <div class="timeline-mini-item">
+          <span class="timeline-mini-year">FOUNDATIONS</span>
+          <div class="timeline-mini-title">Programming &amp; Problem Solving</div>
+          <p style="font-size: 0.8rem; color: var(--c-charcoal-muted);">Building a rock-solid base in Python programming, fundamental data structures, algorithms, and active competitive programming practice.</p>
+        </div>
+        <div class="timeline-mini-item">
+          <span class="timeline-mini-year">EXPLORATION</span>
+          <div class="timeline-mini-title">Intelligent Systems &amp; Web Tech</div>
+          <p style="font-size: 0.8rem; color: var(--c-charcoal-muted);">Studying core AI and Machine Learning principles while engineering interactive, responsive web applications.</p>
+        </div>
+        <div class="timeline-mini-item">
+          <span class="timeline-mini-year">HARDWARE &amp; IOT</span>
+          <div class="timeline-mini-title">Bridging Physical &amp; Digital Systems</div>
+          <p style="font-size: 0.8rem; color: var(--c-charcoal-muted);">Experimenting with electronics, embedded systems, robotics, and the Internet of Things to connect software with physical environments.</p>
+        </div>
+        <div class="timeline-mini-item">
+          <span class="timeline-mini-year">THE VISION</span>
+          <div class="timeline-mini-title">Aspiring Technology Founder</div>
+          <p style="font-size: 0.8rem; color: var(--c-charcoal-muted);">Aiming to identify meaningful problems, build practical solutions, and transform promising ideas into products people use.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reader Section 2: Skills Garage -->
+    <section class="reader-section" id="reader-skills">
+      <div class="reader-section-header">
+        <span class="reader-mile-badge">MILE 1.8 · LEARNING</span>
+        <h2 class="reader-section-title">My Learning Garage</h2>
+      </div>
+      <p style="color: var(--c-charcoal-muted); margin-bottom: 20px;">
+        Every skill begins with curiosity and improves with practice. These are the areas I'm learning, practicing, and exploring as I build my technical foundation.
+      </p>
+      <div class="skills-garage-grid" id="reader-skills-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Reader Section 3: Projects -->
+    <section class="reader-section" id="reader-projects">
+      <div class="reader-section-header">
+        <span class="reader-mile-badge">MILE 3.0 · PROJECTS</span>
+        <h2 class="reader-section-title">Project Stops</h2>
+      </div>
+      <div class="projects-deck" id="reader-projects-deck">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Reader Section 4: Experience & Education -->
+    <section class="reader-section" id="reader-experience">
+      <div class="reader-section-header">
+        <span class="reader-mile-badge">MILE 4.2 · MILESTONES</span>
+        <h2 class="reader-section-title">Education &amp; Experience</h2>
+      </div>
+      <div class="milestones-flow" id="reader-milestones-flow">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Reader Section 5: Achievements -->
+    <section class="reader-section" id="reader-achievements">
+      <div class="reader-section-header">
+        <span class="reader-mile-badge">MILE 5.2 · ACHIEVEMENTS</span>
+        <h2 class="reader-section-title">Milestones &amp; Honors</h2>
+      </div>
+      <div class="achievements-grid" id="reader-achievements-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Reader Section 6: Future Destination -->
+    <section class="reader-section" id="reader-future">
+      <div class="reader-section-header">
+        <span class="reader-mile-badge">MILE 6.1 · HORIZON</span>
+        <h2 class="reader-section-title">Future Destination</h2>
+      </div>
+      <div class="future-narrative" id="reader-future-narrative">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Reader Section 7: Contact -->
+    <section class="reader-section" id="reader-contact">
+      <div class="reader-section-header">
+        <span class="reader-mile-badge">MILE 7.0 · FINAL STOP</span>
+        <h2 class="reader-section-title">Contact Station</h2>
+      </div>
+      <div class="contact-diner" id="reader-contact-diner">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+  </div>
+
+  <!-- JavaScript Entry Point -->
+  <script src="script.js"></script>
+</body>
+
+</html>
